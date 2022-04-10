@@ -1,5 +1,9 @@
-import { View, Text, Image } from "react-native";
-import React from "react";
+import { View, Text, Image, ActivityIndicator } from "react-native";
+import React, { useState } from "react";
+import { FontAwesome5 } from "@expo/vector-icons";
+import AppLoading from "expo-app-loading";
+import UseFonts from "../hooks/UseFonts";
+
 //hard coded data
 export const localRestaurants = [
   {
@@ -32,16 +36,35 @@ export const localRestaurants = [
 ];
 
 const RestaurantsItems = (props) => {
+  const [IsReady, setIsReady] = useState(false);
+  const LoadFonts = async () => {
+    await UseFonts();
+  };
+
+  if (!IsReady) {
+    return (
+      <AppLoading
+        startAsync={LoadFonts}
+        onFinish={() => setIsReady(true)}
+        onError={() => {}}
+      />
+    );
+  }
   return (
     <>
       {localRestaurants.map((item, index) => {
         return (
           <View
             key={index}
-            style={{ height: 250, backgroundColor: "green", marginTop: 10 }}
+            style={{
+              backgroundColor: "#fff",
+              marginTop: 10,
+              height: 270,
+              width: "100%",
+            }}
           >
-         
             {ImageComp(item)}
+            {InfoComponent(item)}
           </View>
         );
       })}
@@ -50,12 +73,41 @@ const RestaurantsItems = (props) => {
 };
 //image component
 const ImageComp = (props) => {
-  console.log(props.image_url);
   return (
-    <Image
-      style={{ width: "90%", height: "90%" }}
-      source={{ uri: props.image_url }}
-    />
+    <>
+      <Image
+        style={{
+          width: "95%",
+          height: "75%",
+          alignSelf: "center",
+          margin: 9,
+        }}
+        source={{ uri: props.image_url }}
+      />
+      <View style={{ position: "absolute", right: 15, top: 15 }}>
+        <FontAwesome5 name="heart" size={28} color="#fff" />
+      </View>
+    </>
+  );
+};
+//info component
+const InfoComponent = (props) => {
+  return (
+    <View
+      style={{
+        flexDirection: "row",
+        justifyContent: "space-between",
+        marginLeft: 10,
+      }}
+    >
+      <View>
+        <Text style={{ fontFamily: "Poppins-MediumItalic",  }}>
+         {props.name}
+        </Text>
+        <Text>30-45 min</Text>
+      </View>
+      <Text style={{ marginRight: 10 }}>{props.rating}</Text>
+    </View>
   );
 };
 export default RestaurantsItems;

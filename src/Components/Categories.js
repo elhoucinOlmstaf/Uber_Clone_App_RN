@@ -1,5 +1,7 @@
 import { View, Text, Image, StyleSheet, ScrollView } from "react-native";
-import React from "react";
+import React, { useState } from "react";
+import UseFonts from "../hooks/UseFonts";
+import AppLoading from "expo-app-loading/build/AppLoading";
 
 // hard coded item data
 const items = [
@@ -33,13 +35,31 @@ const items = [
   },
 ];
 export default function Categories() {
+  const [IsReady, setIsReady] = useState(false);
+  const LoadFonts = async () => {
+    await UseFonts();
+  };
+  if (!IsReady) {
+    return (
+      <AppLoading
+        startAsync={LoadFonts}
+        onFinish={() => setIsReady(true)}
+        onError={() => {}}
+      />
+    );
+  }
   return (
     <View style={styles.listContainer}>
-      <ScrollView horizontal  showsHorizontalScrollIndicator={false}>
+      <ScrollView horizontal showsHorizontalScrollIndicator={false}>
         {items.map((item, index) => (
           <View key={index} style={{ margin: 10 }}>
-            <Image source={item.image} style={{ width: 50, height: 50 , resizeMode:"contain" }} />
-            <Text>{item.text}</Text>
+            <Image
+              source={item.image}
+              style={{ width: 50, height: 50, resizeMode: "contain" }}
+            />
+            <Text style={{ fontFamily: "Roboto-MediumItalic" }}>
+              {item.text}
+            </Text>
           </View>
         ))}
       </ScrollView>
@@ -51,6 +71,6 @@ const styles = StyleSheet.create({
   listContainer: {
     flexDirection: "row",
     backgroundColor: "white",
-    marginTop:10
+    marginTop: 10,
   },
 });
