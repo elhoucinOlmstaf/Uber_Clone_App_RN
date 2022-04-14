@@ -1,4 +1,4 @@
-import { View, Text, Image, ActivityIndicator } from "react-native";
+import { View, Text, Image, TouchableOpacity } from "react-native";
 import React, { useState } from "react";
 import { FontAwesome5 } from "@expo/vector-icons";
 import AppLoading from "expo-app-loading";
@@ -34,13 +34,14 @@ export const localRestaurants = [
     rating: 4.9,
   },
 ];
+const [IsReady, setIsReady] = useState(false);
 
 const RestaurantsItems = (props) => {
-  const [IsReady, setIsReady] = useState(false);
+
+
   const LoadFonts = async () => {
     await UseFonts();
   };
-
   if (!IsReady) {
     return (
       <AppLoading
@@ -50,9 +51,10 @@ const RestaurantsItems = (props) => {
       />
     );
   }
+
   return (
     <>
-      {localRestaurants.map((item, index) => {
+      {props.RestaurantsData.map((item, index) => {
         return (
           <View
             key={index}
@@ -63,7 +65,7 @@ const RestaurantsItems = (props) => {
               width: "100%",
             }}
           >
-            {ImageComp(item)}
+            {ImageComp(item )}
             {InfoComponent(item)}
           </View>
         );
@@ -72,6 +74,7 @@ const RestaurantsItems = (props) => {
   );
 };
 //image component
+
 const ImageComp = (props) => {
   return (
     <>
@@ -84,9 +87,12 @@ const ImageComp = (props) => {
         }}
         source={{ uri: props.image_url }}
       />
-      <View style={{ position: "absolute", right: 15, top: 15 }}>
-        <FontAwesome5 name="heart" size={28} color="#fff" />
-      </View>
+      <TouchableOpacity
+        style={{ position: "absolute", right: 15, top: 15 }}
+        onPress={() => props.setISfilled(true)}
+      >
+        <FontAwesome5 name="heart" size={28}  />
+      </TouchableOpacity>
     </>
   );
 };
@@ -101,9 +107,7 @@ const InfoComponent = (props) => {
       }}
     >
       <View>
-        <Text style={{ fontFamily: "Poppins-MediumItalic",  }}>
-         {props.name}
-        </Text>
+        <Text style={{ fontFamily: "Poppins-MediumItalic" }}>{props.name}</Text>
         <Text>30-45 min</Text>
       </View>
       <Text style={{ marginRight: 10 }}>{props.rating}</Text>

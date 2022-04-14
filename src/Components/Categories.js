@@ -34,8 +34,10 @@ const items = [
     text: "Desserts",
   },
 ];
-export default function Categories() {
+
+export default function Categories(props) {
   const [IsReady, setIsReady] = useState(false);
+
   const LoadFonts = async () => {
     await UseFonts();
   };
