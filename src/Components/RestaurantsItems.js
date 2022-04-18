@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { FontAwesome5 } from "@expo/vector-icons";
 import AppLoading from "expo-app-loading";
 import UseFonts from "../hooks/UseFonts";
+import { useNavigation } from '@react-navigation/native'
 
 //hard coded data
 export const localRestaurants = [
@@ -34,10 +35,11 @@ export const localRestaurants = [
     rating: 4.9,
   },
 ];
-const [IsReady, setIsReady] = useState(false);
 
-const RestaurantsItems = (props) => {
 
+const RestaurantsItems = (props ) => {
+  const [IsReady, setIsReady] = useState(false);
+  const navigation = useNavigation();
 
   const LoadFonts = async () => {
     await UseFonts();
@@ -56,7 +58,8 @@ const RestaurantsItems = (props) => {
     <>
       {props.RestaurantsData.map((item, index) => {
         return (
-          <View
+          <TouchableOpacity
+          onPress={() => navigation.navigate("RestaurantDetails" , {item})}
             key={index}
             style={{
               backgroundColor: "#fff",
@@ -67,7 +70,7 @@ const RestaurantsItems = (props) => {
           >
             {ImageComp(item )}
             {InfoComponent(item)}
-          </View>
+          </TouchableOpacity>
         );
       })}
     </>

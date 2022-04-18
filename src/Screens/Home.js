@@ -7,6 +7,7 @@ import Categories from "../Components/Categories";
 import RestaurantsItems from "../Components/RestaurantsItems";
 import Loading from "../animations/Loading";
 export default function Home() {
+  const [ActiveTab, setActiveTab] = useState("Delivery");
   const KeyAPi =
     "OqCNbW87203R_q2rPPtyrI4fJ2zkIybf7iriNp9yN3v2kjWMqtgKb-lQrh28YARXvEb_R4sxJPemgS57vYgf_MaDg0oCWXi5ezgn7qt85lDgYITXHzbv1L-A5EH8X3Yx";
   const ApiUrl = "https://api.yelp.com/v3/businesses/search?location=NYC";
@@ -19,21 +20,26 @@ export default function Home() {
         Authorization: `Bearer ${KeyAPi}`,
       },
     });
-    const data = await response.json().then((data) => {
-      setRestaurants(data.businesses);
+    await response.json().then((data) => {
+      setRestaurants(
+        data.businesses.filter((business) =>
+          business.transactions.includes(ActiveTab.toLowerCase())
+        )
+      );
+
       setIsDataReady(true);
     });
   };
   useEffect(() => {
     getApi();
-  }, []);
+  }, [ActiveTab]);
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "#eee" }}>
       {IsDataReady ? (
         <>
           <View style={{ backgroundColor: "#fff", padding: 15 }}>
-            <HeaderTabs />
+            <HeaderTabs ActiveTab={ActiveTab} setActiveTab={setActiveTab} />
             <Search_Bar />
           </View>
           <Categories />

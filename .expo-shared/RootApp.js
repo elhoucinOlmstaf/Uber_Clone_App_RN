@@ -10,9 +10,8 @@ import Home from "../Screens/Home";
 import Search from "../Screens/Search";
 import Orders from "../Screens/Orders";
 import Account from "../Screens/Account";
-import RestaurantDetails from '../Screens/RestaurantDetails';
+import RestaurantDetails from "../Screens/RestaurantDetails";
 import { TouchableOpacity } from "react-native";
-
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 const HomeScreen = () => {
@@ -23,7 +22,7 @@ const HomeScreen = () => {
         component={Home}
         options={{ headerShown: false }}
       />
-       <Stack.Screen
+      <Stack.Screen
         name="RestaurantDetails"
         component={RestaurantDetails}
         options={{ headerShown: false }}
@@ -31,6 +30,7 @@ const HomeScreen = () => {
     </Stack.Navigator>
   );
 };
+
 const SearchScreen = () => {
   return (
     <Stack.Navigator>
