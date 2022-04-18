@@ -11,7 +11,7 @@ export default function RestaurantDetails({ navigation, route }) {
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <About Items={route.params.item} />
+      <About route={route}/>
       <MenuItem />
     </SafeAreaView>
   );

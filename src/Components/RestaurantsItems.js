@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { FontAwesome5 } from "@expo/vector-icons";
 import AppLoading from "expo-app-loading";
 import UseFonts from "../hooks/UseFonts";
-import { useNavigation } from '@react-navigation/native'
+import { useNavigation } from "@react-navigation/native";
 
 //hard coded data
 export const localRestaurants = [
@@ -36,8 +36,7 @@ export const localRestaurants = [
   },
 ];
 
-
-const RestaurantsItems = (props ) => {
+const RestaurantsItems = (props) => {
   const [IsReady, setIsReady] = useState(false);
   const navigation = useNavigation();
 
@@ -59,7 +58,16 @@ const RestaurantsItems = (props ) => {
       {props.RestaurantsData.map((item, index) => {
         return (
           <TouchableOpacity
-          onPress={() => navigation.navigate("RestaurantDetails" , {item})}
+            onPress={() =>
+              navigation.navigate("RestaurantDetails", {
+                Image: item.image_url,
+                name: item.name,
+                price: item.price,
+                rating: item.rating,
+                review: item.review_count,
+                categories: item.categories,
+              })
+            }
             key={index}
             style={{
               backgroundColor: "#fff",
@@ -68,7 +76,7 @@ const RestaurantsItems = (props ) => {
               width: "100%",
             }}
           >
-            {ImageComp(item )}
+            {ImageComp(item)}
             {InfoComponent(item)}
           </TouchableOpacity>
         );
@@ -94,7 +102,7 @@ const ImageComp = (props) => {
         style={{ position: "absolute", right: 15, top: 15 }}
         onPress={() => props.setISfilled(true)}
       >
-        <FontAwesome5 name="heart" size={28}  />
+        <FontAwesome5 name="heart" size={28} />
       </TouchableOpacity>
     </>
   );
